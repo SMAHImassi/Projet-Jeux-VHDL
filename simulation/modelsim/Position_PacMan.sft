@@ -1,0 +1,5 @@
+set tool_name "ModelSim-Altera (VHDL)"
+set corner_file_list {
+	{{"Slow Model"} {Position_PacMan.vho Position_PacMan_vhd.sdo}}
+	{{"Fast Model"} {Position_PacMan_fast.vho Position_PacMan_vhd_fast.sdo}}
+}

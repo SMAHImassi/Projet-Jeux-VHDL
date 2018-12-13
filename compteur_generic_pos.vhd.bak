@@ -1,0 +1,34 @@
+Library ieee;
+Use ieee.std_logic_1164.all;
+Use ieee.numeric_std.all;
+Use ieee.std_logic_unsigned.all;
+entity compteur_generic_pos is
+generic (taille : integer := 4);
+PORT (
+	RESET, CLOCK, LOAD, UP, E: in std_logic;
+	DATA : in std_logic_vector (taille-1 downto 0);
+	Q : out std_logic_vector (taille-1 downto 0));
+end compteur_generic ;
+architecture DESCRIPTION of compteur_generic_posY  is
+signal CMP: std_logic_vector (taille-1 downto 0);
+begin
+	process (RESET,CLOCK)
+		begin
+		if RESET ='1' then
+			CMP <= (others => '0'); -- Remise à zero asynchrone du compteur
+		elsif (CLOCK ='1' and CLOCK'event) then
+			if (E = '1') then
+				if (LOAD ='1') then
+					CMP <= DATA; -- Préchargement synchrone
+				else
+					if (UP ='1') then
+					CMP <= CMP + 1 ; -- Incrémentation synchrone
+					else
+					CMP <= CMP - 1 ; -- décrémentation 
+					end if;
+				end if;
+			end if;
+		end if;
+	end process;
+	Q <= CMP;
+end DESCRIPTION;

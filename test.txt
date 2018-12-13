@@ -1,0 +1,51 @@
+library ieee ;
+use ieee.std_logic_1164.all ;
+entity Temporisateur is 
+port (clk: in std_logic;
+			C0 : integer  range 0 to  255;
+			C1 : integer range 0 to 255;
+			S: out std_logic;
+			R: out std_logic);
+end Temporisateur;
+Architecture tempo of Temporisateur is
+type state is (A,B,C,D);
+signal etat, etat_futur : state;
+begin
+	P1: process(clk)-- process pour l'horloge
+	begin
+	if (clk'event and clk='1') then
+			etat<=etat_futur;
+	end if;
+	end process P1;
+	P2 : process (etat) --Pour le circuit de Sortie
+	begin 
+	case etat is
+			when A => S<='0';R<='1';
+			when B => S<='0'; R<='0';
+			when C => S<='1'; R<='1';
+			When D => S<='1'; R<='0';
+	end case;
+	end process P2;
+	P3 : process (etat,C0,C1) --Process d'excitation
+	begin
+	case etat is 
+			when A=> 
+			if ( C0='1') then
+				etat_futur<=B;
+				else etat_futur <= A;
+			end if;
+			
+			when B=> etat_futur <= C;
+			when C=> 
+			if (C1='0') then 
+				etat_futur<= C;
+				else etat_futur <= D;
+			end if;
+			when D => etat_futur <= A;
+	end case ;
+	end Process P3;
+end Tempo;
+			
+				
+			
+	

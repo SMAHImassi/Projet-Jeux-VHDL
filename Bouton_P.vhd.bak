@@ -1,0 +1,20 @@
+LIBRARY ieee;
+USE ieee.std_logic_unsigned.ALL;
+USE ieee.std_logic_1164.ALL;
+USE ieee.std_logic_arith.all;
+ENTITY Bouton_P IS 
+generic ( taille : integer := 4);
+	PORT(
+	Col,Dir,Fleche: IN STD_LOGIC_VECTOR (taille downto 0):= "0000";
+	 U : IN STD_LOGIC;
+        D : In STD_LOGIC;
+        L: IN STD_LOGIC;
+		  R : IN STD_LOGIC;
+	P,S : OUT STD_LOGIC:= '0');
+	end Bouton_P;
+ARCHITECTURE Fonction_P OF Bouton_P IS
+--signal ADDS : STD_LOGIC_VECTOR(taille-1 downto 0);
+begin 
+	S<= Col AND Dir;
+	P<= Col AND Fleche ;
+end Fonction;

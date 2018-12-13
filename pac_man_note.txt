@@ -1,0 +1,38 @@
+Library ieee;
+Use ieee.std_logic_1164.all;
+Use ieee.numeric_std.all;
+Use ieee.std_logic_unsigned.all;
+entity compteur_generic_posY is
+generic (taille : integer := 4);
+PORT (
+	RESETy, CLOCK, LOADy, UPy, Ey: in std_logic;
+	DATAy : in std_logic_vector (taille-1 downto 0);
+	Pos_Y : out std_logic_vector (taille-1 downto 0));
+end compteur_generic ;
+architecture DESCRIPTION of compteur_generic_posY  is
+signal CMP: std_logic_vector (taille-1 downto 0);
+begin
+	process (RESETy,CLOCK)
+		begin
+		if RESETy ='1' then
+			CMP <= (others => '0'); -- Remise à zero asynchrone du compteur
+		elsif (CLOCK ='1' and CLOCK'event) then
+			if (Ey = '1') then
+				if (LOADy ='1') then
+					CMP <= DATAy; -- Préchargement synchrone
+				else
+					if (UPy ='1') then
+					CMP <= CMP + 1 ; -- Incrémentation synchrone
+					else
+					CMP <= CMP - 1 ; -- décrémentation 
+					end if;
+				end if;
+			end if;
+		end if;
+	end process;
+	Pos_Y <= CMP;
+end DESCRIPTION;
+
+Compsup : comparateur
+		generic map(taille => 12)
+		port map(A => Dr, B => DRM, sup => S);
